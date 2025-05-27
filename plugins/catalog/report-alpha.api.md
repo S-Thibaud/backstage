@@ -370,11 +370,18 @@ const _default: FrontendPlugin<
           >;
       inputs: {
         iconLinks: ExtensionInput<
-          ConfigurableExtensionDataRef<
-            () => IconLinkVerticalProps,
-            'entity-icon-link-props',
-            {}
-          >,
+          | ConfigurableExtensionDataRef<
+              (entity: Entity) => boolean,
+              'catalog.entity-filter-function',
+              {
+                optional: true;
+              }
+            >
+          | ConfigurableExtensionDataRef<
+              () => IconLinkVerticalProps,
+              'entity-icon-link-props',
+              {}
+            >,
           {
             singleton: false;
             optional: false;
@@ -942,85 +949,30 @@ const _default: FrontendPlugin<
       config: {
         label: string | undefined;
         title: string | undefined;
-        color: 'primary' | 'secondary' | undefined;
-        href: string | undefined;
-        hidden: boolean | undefined;
-        disabled: boolean | undefined;
+        filter: EntityPredicate | undefined;
       };
       configInput: {
-        color?: 'primary' | 'secondary' | undefined;
-        hidden?: boolean | undefined;
+        filter?: EntityPredicate | undefined;
         label?: string | undefined;
         title?: string | undefined;
-        disabled?: boolean | undefined;
-        href?: string | undefined;
       };
-      output: ConfigurableExtensionDataRef<
-        () => IconLinkVerticalProps,
-        'entity-icon-link-props',
-        {}
-      >;
+      output:
+        | ConfigurableExtensionDataRef<
+            (entity: Entity) => boolean,
+            'catalog.entity-filter-function',
+            {
+              optional: true;
+            }
+          >
+        | ConfigurableExtensionDataRef<
+            () => IconLinkVerticalProps,
+            'entity-icon-link-props',
+            {}
+          >;
       inputs: {};
       params: {
-        props: IconLinkVerticalProps | (() => IconLinkVerticalProps);
-      };
-    }>;
-    'entity-icon-link:catalog/scaffolder-launch-template': ExtensionDefinition<{
-      kind: 'entity-icon-link';
-      name: 'scaffolder-launch-template';
-      config: {
-        label: string | undefined;
-        title: string | undefined;
-        color: 'primary' | 'secondary' | undefined;
-        href: string | undefined;
-        hidden: boolean | undefined;
-        disabled: boolean | undefined;
-      };
-      configInput: {
-        color?: 'primary' | 'secondary' | undefined;
-        hidden?: boolean | undefined;
-        label?: string | undefined;
-        title?: string | undefined;
-        disabled?: boolean | undefined;
-        href?: string | undefined;
-      };
-      output: ConfigurableExtensionDataRef<
-        () => IconLinkVerticalProps,
-        'entity-icon-link-props',
-        {}
-      >;
-      inputs: {};
-      params: {
-        props: IconLinkVerticalProps | (() => IconLinkVerticalProps);
-      };
-    }>;
-    'entity-icon-link:catalog/techdocs-view-documentation': ExtensionDefinition<{
-      kind: 'entity-icon-link';
-      name: 'techdocs-view-documentation';
-      config: {
-        label: string | undefined;
-        title: string | undefined;
-        color: 'primary' | 'secondary' | undefined;
-        href: string | undefined;
-        hidden: boolean | undefined;
-        disabled: boolean | undefined;
-      };
-      configInput: {
-        color?: 'primary' | 'secondary' | undefined;
-        hidden?: boolean | undefined;
-        label?: string | undefined;
-        title?: string | undefined;
-        disabled?: boolean | undefined;
-        href?: string | undefined;
-      };
-      output: ConfigurableExtensionDataRef<
-        () => IconLinkVerticalProps,
-        'entity-icon-link-props',
-        {}
-      >;
-      inputs: {};
-      params: {
-        props: IconLinkVerticalProps | (() => IconLinkVerticalProps);
+        useProps: () => Omit<IconLinkVerticalProps, 'color'>;
+        filter?: EntityPredicate | ((entity: Entity) => boolean);
       };
     }>;
     'nav-item:catalog': ExtensionDefinition<{
